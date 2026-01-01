@@ -404,18 +404,18 @@ This document outlines the future development plans for the Droid-LLM-Hunter.
 
 ## FAQ
 
-*  **Is the AI analysis 100% accurate ?**
+**Is the AI analysis 100% accurate ?**
 
 No. While Droid LLM Hunter drastically reduces noise using **Context Awareness** and **Smart Filtering**, LLMs (Artificial Intelligence) are probabilistic and can still make mistakes or "hallucinate". Treat the results as **leads** that require manual verification. The tool is designed to augment human intelligence, not replace it. Always verify findings manually!
 
-*  **Why Performance scan APK slow ?**
+**Why Performance scan APK slow ?**
 
 **Note on Performance:** The speed of the analysis also heavily depends on:
 *   **The LLM Provider/Model:** Local models (Ollama) depend on hardware (GPU/CPU). Cloud models (Groq/Gemini/OpenAI) are generally faster but depend on network latency.
 *   **Active Rules:** Enabling more rules increases the number of queries sent to the LLM.
 *   **Context Injection:** Using Cross-Reference Context (Call Graph) adds more data to process, slightly increasing analysis time for better accuracy.
 
-*  **How can I add a new vulnerability rule ?**
+**How can I add a new vulnerability rule ?**
 
 To add a new vulnerability rule :
 1.  Create a new YAML file in the `config/prompts/vuln_rules` directory (containing `name`, `description`, and `prompt`).
