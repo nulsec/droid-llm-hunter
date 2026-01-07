@@ -12,6 +12,9 @@ You MUST provide your response in valid JSON format. Do NOT include any text out
   "confidence": "string",   // "High", "Medium", or "Low".
   "evidence": "string",     // The specific line(s) of code that caused the vulnerability.
   "description": "string",   // A concise explanation of the vulnerability and why it is a risk.
+  "attack_scenario": "string", // A short narrative describing how an attacker would exploit this (e.g. "Attacker crafts malicious URL...").
+  "attacker_priority": "string", // "HIGH", "MEDIUM", or "LOW" based on exploitability impact.
+  "recommendation": "string", // Specific actionable remediation (e.g. "Validate input using...", "Use EncryptedSharedPreferences...").
   "false_positive_analysis": "string" // Explain potential reasons why this might be a false positive (e.g., missing context, external validation).
 }
 ```

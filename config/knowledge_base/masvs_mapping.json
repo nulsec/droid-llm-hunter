@@ -1,77 +1,77 @@
 {
     "sql_injection": {
-        "masvs_id": "MASVS-STORAGE-1",
-        "description": "Ensure that system credential storage facilities are used to store sensitive data, and input validation is applied to prevent Injection attacks.",
-        "reference": "https://mas.owasp.org/MASVS/04-MASVS-STORAGE/"
+        "masvs_id": "MASVS-CODE-4",
+        "description": "The app validates and sanitizes all untrusted inputs. Ensure that inputs are validated to prevent Injection attacks.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-CODE-4/"
     },
     "webview_xss": {
         "masvs_id": "MASVS-PLATFORM-2",
-        "description": "Ensure that WebViews are configured to limit access to sensitive data and features. JavaScript execution should be disabled unless explicitly required.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "description": "The app uses WebViews securely. WebViews should be configured to prevent sensitive data leakage and functionalities like JavaScript bridges should be restricted.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-2/"
     },
     "insecure_webview": {
         "masvs_id": "MASVS-PLATFORM-2",
-        "description": "Ensure that WebViews do not expose critical interfaces or allow untrusted content to access internal resources.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "description": "The app uses WebViews securely. Ensure that WebViews do not expose critical interfaces or allow untrusted content to access internal resources.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-2/"
     },
     "hardcoded_secrets": {
         "masvs_id": "MASVS-STORAGE-2",
-        "description": "Ensure that no sensitive data, such as API keys or passwords, is hardcoded in the source code.",
-        "reference": "https://mas.owasp.org/MASVS/04-MASVS-STORAGE/"
+        "description": "The app prevents leakage of sensitive data. Ensure that no sensitive data, such as API keys or passwords, is hardcoded in the source code.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-STORAGE-2/"
     },
     "insecure_storage": {
         "masvs_id": "MASVS-STORAGE-1",
-        "description": "Ensure that sensitive data is stored securely using the Android Keystore system or EncryptedSharedPreferences.",
-        "reference": "https://mas.owasp.org/MASVS/04-MASVS-STORAGE/"
+        "description": "The app securely stores sensitive data. Ensure that sensitive data is stored securely using the Android Keystore system or EncryptedSharedPreferences.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-STORAGE-1/"
     },
     "insecure_file_permissions": {
-        "masvs_id": "MASVS-PLATFORM-1",
-        "description": "Ensure that the app uses appropriate file permissions (e.g., Context.MODE_PRIVATE) to prevent unauthorized access by other apps.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "masvs_id": "MASVS-STORAGE-1",
+        "description": "The app securely stores sensitive data. Ensure that the app uses appropriate file permissions (e.g., Context.MODE_PRIVATE) to protect data.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-STORAGE-1/"
     },
     "insecure_random_number_generation": {
         "masvs_id": "MASVS-CRYPTO-1",
-        "description": "Ensure that the app uses strong, cryptographically secure random number generators (SecureRandom) instead of weak ones (Random).",
-        "reference": "https://mas.owasp.org/MASVS/05-MASVS-CRYPTO/"
+        "description": "The app employs current strong cryptography and uses it according to industry best practices. Use SecureRandom instead of weak RNGs.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-CRYPTO-1/"
     },
     "biometric_bypass": {
         "masvs_id": "MASVS-AUTH-2",
-        "description": "Ensure that biometric authentication is implemented securely and cannot be easily bypassed.",
-        "reference": "https://mas.owasp.org/MASVS/03-MASVS-AUTH/"
+        "description": "The app performs local authentication securely according to the platform best practices. Check for weak implementations of BiometricPrompt.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-AUTH-2/"
     },
     "intent_spoofing": {
         "masvs_id": "MASVS-PLATFORM-1",
-        "description": "Ensure that exported components are protected with permissions or intents are validated to prevent spoofing attacks.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "description": "The app uses IPC mechanisms securely. Ensure that exported components are protected with permissions or intents are validated.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-1/"
     },
     "exported_components": {
         "masvs_id": "MASVS-PLATFORM-1",
-        "description": "Ensure that components (Activities, Services, Receivers) are not exported unless necessary, and are protected by permissions.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "description": "The app uses IPC mechanisms securely. Ensure that components (Activities, Services, Receivers) are not exported unless necessary.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-1/"
     },
     "webview_deeplink": {
-        "masvs_id": "MASVS-PLATFORM-3",
-        "description": "Ensure that deep links are properly validated to prevent URL manipulation or execution of arbitrary actions via WebViews.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "masvs_id": "MASVS-PLATFORM-2",
+        "description": "The app uses WebViews securely. Ensure that deep links loading into WebViews are properly validated to prevent URL manipulation.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-2/"
     },
     "deeplink_hijack": {
-        "masvs_id": "MASVS-PLATFORM-3",
-        "description": "Ensure that the app verifies the origin and integrity of data received via deep links.",
-        "reference": "https://mas.owasp.org/MASVS/06-MASVS-PLATFORM/"
+        "masvs_id": "MASVS-PLATFORM-1",
+        "description": "The app uses IPC mechanisms securely. Ensure that the app verifies the origin and integrity of data received via deep links.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-1/"
     },
     "path_traversal": {
         "masvs_id": "MASVS-CODE-4",
-        "description": "Ensure that file inputs are validated to prevent Path Traversal attacks giving access to arbitrary files.",
-        "reference": "https://mas.owasp.org/MASVS/07-MASVS-CODE/"
+        "description": "The app validates and sanitizes all untrusted inputs. Ensure that file inputs are validated to prevent Path Traversal attacks.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-CODE-4/"
     },
     "jetpack_compose_security": {
-        "masvs_id": "MASVS-CODE-2",
-        "description": "Ensure that UI components handle sensitive data securely and do not leak information via side channels.",
-        "reference": "https://mas.owasp.org/MASVS/07-MASVS-CODE/"
+        "masvs_id": "MASVS-PLATFORM-3",
+        "description": "The app uses the user interface securely. Ensure that UI components handle sensitive data securely and do not leak information.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-PLATFORM-3/"
     },
     "graphql_injection": {
-        "masvs_id": "MASVS-NETWORK-2",
-        "description": "Ensure that API inputs are validated to prevent injection attacks against backend services.",
-        "reference": "https://mas.owasp.org/MASVS/05-MASVS-NETWORK/"
+        "masvs_id": "MASVS-CODE-4",
+        "description": "The app validates and sanitizes all untrusted inputs. Ensure that API inputs are validated to prevent injection attacks.",
+        "reference": "https://mas.owasp.org/MASVS/controls/MASVS-CODE-4/"
     }
 }

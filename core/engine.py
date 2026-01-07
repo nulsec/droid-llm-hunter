@@ -63,36 +63,32 @@ class Engine:
         import json
         import re
         
-        def clean_json_string(s):
-            # Remove Markdown code blocks
-            s = re.sub(r'```json\s*', '', s)
-            s = re.sub(r'```', '', s)
-            return s.strip()
+        # Strategy 1: Extract JSON from code blocks or raw text using Regex
+        # Matches content between the first { and the last } (spanning multiple lines)
+        json_match = re.search(r'\{.*\}', response, re.DOTALL)
+        
+        json_candidate = ""
+        if json_match:
+            json_candidate = json_match.group(0)
+        else:
+            # Fallback: Maybe the LLM returned just a dictionary string without braces? (Unlikely but possible)
+            json_candidate = response
 
         try:
-            # First attempt: Clean and parse directly
-            cleaned_response = clean_json_string(response)
-            # Find the first '{' and last '}'
-            start = cleaned_response.find('{')
-            end = cleaned_response.rfind('}')
-            if start != -1 and end != -1:
-                json_candidate = cleaned_response[start:end+1]
-                # Fix common LLM mistake: unescaped newlines within strings
-                # This is tricky without a proper parser, but we can try to escape newlines 
-                # that are not followed by a quote or whitespace (heuristic)
-                return json.loads(json_candidate)
-                
-        except json.JSONDecodeError as e:
-             # Just log the failure details for debugging
-             log.debug(f"Initial JSON parse failed: {e}. Attempting recovery...")
+            return json.loads(json_candidate)
+        except json.JSONDecodeError:
+            # Strategy 2: Fix common trailing comma issues or unescaped quotes (Basic cleanup)
+            # Remove trailing commas before closing braces/brackets
+            cleaned_json = re.sub(r',\s*([\]\}])', r'\1', json_candidate)
+            try:
+                return json.loads(cleaned_json)
+            except json.JSONDecodeError:
+                pass
 
-        # Fallback mechanism if standard parsing fails
+        # Strategy 3: Setup AST fallback for Python-dict-like strings
         try:
-            # Try to grab data with Regex if JSON is completely broken
             import ast
-            # Sometimes LLMs produce Python-dictionary-like strings (Single quotes, None instead of null)
-            # AST literal_eval is safer than eval()
-            return ast.literal_eval(response)
+            return ast.literal_eval(json_candidate)
         except:
              pass
 
