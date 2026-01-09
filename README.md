@@ -33,20 +33,21 @@ It supports **Hybrid Decompilation** (Smali/Java), **Context-Aware Analysis** (C
 
   </div>
   
+<div align="center">
   <table>
     <tr>
+      <td align="center" valign="top">
+        <strong>Tutorial Install Droid LLM Hunter</strong>
+        <br><br>
+        <a href="https://www.youtube.com/watch?v=dKTGMsPmxqg" target="_blank">
+          <img src="https://img.youtube.com/vi/dKTGMsPmxqg/hqdefault.jpg" alt="Demo 1" width="100%"/>
+        </a>
+      </td>
       <td align="center" valign="top">
         <strong>WebView via DeepLink - Exported Components</strong>
         <br><br>
         <a href="https://www.youtube.com/watch?v=VBNsb8ibK9Q" target="_blank">
-          <img src="https://img.youtube.com/vi/VBNsb8ibK9Q/hqdefault.jpg" alt="Demo 1" width="100%"/>
-        </a>
-      </td>
-      <td align="center" valign="top">
-        <strong>Hardcoded Secrets</strong>
-        <br><br>
-        <a href="https://www.youtube.com/watch?v=F9sDP9qO1o0" target="_blank">
-          <img src="https://img.youtube.com/vi/F9sDP9qO1o0/hqdefault.jpg" alt="Demo 2" width="100%"/>
+          <img src="https://img.youtube.com/vi/VBNsb8ibK9Q/hqdefault.jpg" alt="Demo 2" width="100%"/>
         </a>
       </td>
     </tr>
@@ -153,6 +154,37 @@ Droid LLM Hunter uses a multi-stage process to analyze an APK:
 ```
 
 **For more detailed** information **JSON Report** Structure, see the [JSON Report](output/)
+
+---
+
+  <div align="center">
+
+### 🎬 Demo - Droid LLM Hunter
+
+  </div>
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" valign="top">
+        <strong>Universal Logic Flaw</strong>
+        <br><br>
+        <a href="https://www.youtube.com/watch?v=0VtOxaxZajY" target="_blank">
+          <img src="https://img.youtube.com/vi/0VtOxaxZajY/hqdefault.jpg" alt="Demo 1" width="100%"/>
+        </a>
+      </td>
+      <td align="center" valign="top">
+        <strong>Hardcoded Secrets</strong>
+        <br><br>
+        <a href="https://www.youtube.com/watch?v=F9sDP9qO1o0" target="_blank">
+          <img src="https://img.youtube.com/vi/F9sDP9qO1o0/hqdefault.jpg" alt="Demo 2" width="100%"/>
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
 
 ## Available Scanners
 
