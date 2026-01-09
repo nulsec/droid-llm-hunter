@@ -3,7 +3,7 @@ from typing import List
 from core import log
 
 class CodeFilter:
-    def __init__(self, decompiled_dir: str, mode: str = "smali"):
+    def __init__(self, decompiled_dir: str, mode: str = "smali", additional_keywords: List[str] = None):
         self.decompiled_dir = decompiled_dir
         self.mode = mode
         
@@ -46,7 +46,9 @@ class CodeFilter:
             "KeyGenParameterSpec"
         ]
         
-        self.keywords = self.java_keywords if mode == "java" else self.smali_keywords
+        # Merge built-in keywords with any dynamic additional keywords
+        base_keywords = self.java_keywords if mode == "java" else self.smali_keywords
+        self.keywords = base_keywords + (additional_keywords if additional_keywords else [])
         self.extension = ".java" if mode == "java" else ".smali"
 
     def find_high_value_targets(self) -> List[str]:

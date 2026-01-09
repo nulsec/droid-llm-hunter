@@ -58,47 +58,78 @@ class Engine:
             return "Vulnerable"
         return "Not Vulnerable"
 
+    def _extract_json_str(self, text: str) -> str:
+        """Extracts the first valid JSON object string by counting braces."""
+        text = text.strip()
+        start_idx = text.find('{')
+        if start_idx == -1:
+            return ""
+        
+        balance = 0
+        for i in range(start_idx, len(text)):
+            char = text[i]
+            if char == '{':
+                balance += 1
+            elif char == '}':
+                balance -= 1
+                if balance == 0:
+                    return text[start_idx:i+1]
+        return ""
+
     def _parse_llm_response(self, response: str) -> dict:
         """Parses the LLM response string into a dictionary, handling potential formatting issues."""
         import json
         import re
-        
-        # Strategy 1: Extract JSON from code blocks or raw text using Regex
-        # Matches content between the first { and the last } (spanning multiple lines)
-        json_match = re.search(r'\{.*\}', response, re.DOTALL)
-        
-        json_candidate = ""
-        if json_match:
-            json_candidate = json_match.group(0)
-        else:
-            # Fallback: Maybe the LLM returned just a dictionary string without braces? (Unlikely but possible)
-            json_candidate = response
+        import ast
 
-        try:
-            return json.loads(json_candidate)
-        except json.JSONDecodeError:
-            # Strategy 2: Fix common trailing comma issues or unescaped quotes (Basic cleanup)
-            # Remove trailing commas before closing braces/brackets
-            cleaned_json = re.sub(r',\s*([\]\}])', r'\1', json_candidate)
+        # Strategy 0: Clean Markdown Code Blocks
+        # Many LLMs wrap JSON in ```json ... ```
+        cleaned_response = re.sub(r'^```[a-zA-Z]*\n', '', response.strip())
+        cleaned_response = re.sub(r'```$', '', cleaned_response).strip()
+
+        # Strategy 1: Extract JSON using Brace Counting (Most Robust)
+        json_candidate = self._extract_json_str(cleaned_response)
+        
+        if not json_candidate:
+            # Fallback for when brace counting fails (e.g. malformed)
+            match = re.search(r'\{.*\}', cleaned_response, re.DOTALL)
+            if match:
+                json_candidate = match.group(0)
+            else:
+                json_candidate = cleaned_response
+
+        # List of candidate strings to try parsing
+        candidates = [json_candidate, cleaned_response, response]
+        
+        for candidate in candidates:
+            if not candidate: continue
             try:
-                return json.loads(cleaned_json)
+                # strict=False allows control characters like newlines in strings
+                return json.loads(candidate, strict=False)
             except json.JSONDecodeError:
-                pass
+                # Sub-strategy: Fix common JSON issues (trailing commas)
+                try:
+                    fixed_json = re.sub(r',\s*([\]\}])', r'\1', candidate)
+                    return json.loads(fixed_json, strict=False)
+                except:
+                    pass
+                
+                # Sub-strategy: Python AST Fallback (Single quotes, etc.)
+                try:
+                    return ast.literal_eval(candidate)
+                except:
+                    pass
 
-        # Strategy 3: Setup AST fallback for Python-dict-like strings
-        try:
-            import ast
-            return ast.literal_eval(json_candidate)
-        except:
-             pass
-
-        log.warning(f"Failed to parse LLM response as JSON: {response[:100]}...")
+        log.warning(f"Failed to parse LLM response as JSON. Raw: {response[:100]}...")
         return {
                 "is_vulnerable": False,
                 "severity": "Info",
                 "confidence": "Low",
                 "evidence": "",
-                "description": "Failed to parse LLM response. Raw response: " + response,
+                "description": "Failed to parse LLM response. Please review raw output.",
+                "attack_scenario": "N/A (Parsing Failed)",
+                "attacker_priority": "N/A",
+                "recommendation": "Check raw LLM output for details.",
                 "false_positive_analysis": "Parsing failed."
             }
 
@@ -295,6 +326,8 @@ class Engine:
         summaries_text = "\n".join(f"- {file_path}: {summary}" for file_path, summary in summaries.items())
         
         prompt = self._load_app_summary_prompt().format(manifest=manifest, summaries=summaries_text)
+        # Escape curly braces to prevent double formatting issues in analyze_code
+        prompt = prompt.replace("{", "{{").replace("}", "}}")
         
         context = {
             "system_prompt": "",
@@ -315,6 +348,8 @@ class Engine:
         summaries_text = "\n".join(f"- {file_path}: {summary}" for file_path, summary in summaries.items())
         
         prompt = self._load_attack_surface_prompt().format(manifest=manifest, summaries=summaries_text)
+        # Escape curly braces to prevent double formatting issues in analyze_code
+        prompt = prompt.replace("{", "{{").replace("}", "}}")
         
         context = {
             "system_prompt": "",
@@ -391,7 +426,25 @@ class Engine:
         if smali_rules_enabled:
             filter_mode = self.settings.analysis.filter_mode
             log.info(f"Using filter mode: {filter_mode}")
+
+            # --- DYNAMIC KEYWORD GATHERING ---
+            extra_keywords = []
+            for rule_name, enabled in self.settings.rules.dict().items():
+                if enabled and rule_name not in ["webview_deeplink", "intent_spoofing", "exported_components", "deeplink_hijack"]:
+                     try:
+                        prompt_path = f"config/prompts/vuln_rules/{rule_name}.yaml"
+                        with open(prompt_path, "r") as f:
+                            rule_data = yaml.safe_load(f)
+                            if "keywords" in rule_data and rule_data["keywords"]:
+                                extra_keywords.extend(rule_data["keywords"])
+                     except Exception as e:
+                         log.warning(f"Could not load keywords from {rule_name}: {e}")
             
+            # Deduplicate keywords
+            extra_keywords = list(set(extra_keywords))
+            if extra_keywords:
+                log.info(f"Loaded {len(extra_keywords)} dynamic keywords from enabled rules.")
+
             # --- STRATEGY SELECTION ---
             
             # Set scan roots
@@ -404,29 +457,29 @@ class Engine:
             # A. STATIC FILTER PHASE
             if filter_mode in ["static_only", "hybrid"]:
                 if decomp_mode == "apktool":
-                    cf = CodeFilter(smali_dir, mode="smali")
+                    cf = CodeFilter(smali_dir, mode="smali", additional_keywords=extra_keywords)
                     potential_targets = cf.find_high_value_targets()
                     
                 elif decomp_mode == "jadx":
                     if os.path.exists(java_dir):
-                        cf = CodeFilter(java_dir, mode="java")
+                        cf = CodeFilter(java_dir, mode="java", additional_keywords=extra_keywords)
                         potential_targets = cf.find_high_value_targets()
                     else:
                         log.error("JADX sources not found. Falling back to Smali.")
-                        cf = CodeFilter(smali_dir, mode="smali")
+                        cf = CodeFilter(smali_dir, mode="smali", additional_keywords=extra_keywords)
                         potential_targets = cf.find_high_value_targets()
 
                 elif decomp_mode == "hybrid":
                     # HYBRID DECOMPILER + HYBRID FILTER
                     # Ideally we want to find Java targets.
                     if os.path.exists(java_dir):
-                        cf = CodeFilter(java_dir, mode="java")
+                        cf = CodeFilter(java_dir, mode="java", additional_keywords=extra_keywords)
                         java_targets = cf.find_high_value_targets()
                         potential_targets = java_targets
                         # Note: We rely on Java finding them. If obfuscation hides keywords in Java 
                         # but not Smali? That's rare. Usually matches.
                     else:
-                        cf = CodeFilter(smali_dir, mode="smali")
+                        cf = CodeFilter(smali_dir, mode="smali", additional_keywords=extra_keywords)
                         potential_targets = cf.find_high_value_targets()
 
             # B. LLM_ONLY PHASE (Get everything)

@@ -1,0 +1,37 @@
+name: "Conceptual Logic Flaw Detection"
+description: "Detects sophisticated logic flaws in Android Internals (IPC/Reflection) and Business Logic (Financial/Auth)."
+prompt: |
+  You are an Advanced Android Security Researcher specializing in LOGIC FLAWS.
+  
+  Analyze the following code snippet for subtle CONCEPTUAL Vulnerabilities in:
+  1. **Low-Level Android:** IPC (`Parcel`, `Serializable`, `Intent`), Reflection (`Method.invoke`), Deep Link handling.
+  2. **High-Level Business Logic:** Payment bypasses, Admin privilege escalation, Transaction manipulation.
+
+  **Devil's Advocate Questions (Challenge the Code):**
+  - **Logic Bypass:** Can I manipulate inputs to skip the critical `if (securityCheck)` block? (Race Conditions).
+  - **Deserialization:** Does it accept `Serializable`/`Parcelable` from an external Intent? (Object Injection risk).
+  - **Reflection:** Is `Method.invoke` or `Class.forName` used with user-controlled strings? (RCE Risk).
+  - **Financial Logic:** Can I send a negative number to a payment function? Is the "Amount" trusted from client input?
+  
+  Code to Analyze:
+  ```java
+  {code_snippet}
+  ```
+
+  Context:
+  - File: {file_path}
+
+  If you find a Logic Flaw, explain the "Kill Chain" (How to trigger it). If the code is robust, say "Safe".
+tags: ["logic_flaw", "ipc", "reflection", "business_logic", "serialization"]
+keywords:
+  - "Parcel"
+  - "Serializable"
+  - "Bundle"
+  - "Reflection"
+  - "Method.invoke"
+  - "Class.forName"
+  - "shouldOverrideUrlLoading"
+  - "payment"
+  - "transfer"
+  - "admin"
+  - "balance"

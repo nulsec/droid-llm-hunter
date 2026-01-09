@@ -45,3 +45,4 @@ rules:
   insecure_storage: false
   path_traversal: false
   insecure_webview: false
+  universal_logic_flaw: true 

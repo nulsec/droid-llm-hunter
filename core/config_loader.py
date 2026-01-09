@@ -43,6 +43,7 @@ class RulesSettings(BaseModel):
     insecure_storage: bool
     path_traversal: bool
     insecure_webview: bool
+    universal_logic_flaw: bool 
 
 class Settings(BaseModel):
     llm: LLMSettings

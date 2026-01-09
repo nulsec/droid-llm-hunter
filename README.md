@@ -188,6 +188,7 @@ Enable or Disable these rules in `config/settings.yaml`:
 - insecure_storage
 - path_traversal
 - insecure_webview
+- universal_logic_flaw
 ```
 
 ## Filter Mode Scanners
@@ -300,7 +301,7 @@ python dlh.py scan [APK file]
 
 *   **Scan an APK with verbose logging:**
     ```bash
-    python dlh.py --verbose scan [APK file]
+    python dlh.py -v scan [APK file]
     ```
 
 *   **Skip the decompilation step:**
@@ -323,45 +324,9 @@ python dlh.py scan [APK file]
     python dlh.py --help
     ```
 
-    ```bash
-     Droid-LLM-Hunter: A tool to scan for vulnerabilities in Android applications.
-
-    Options
-    --verbose             -v            Enable verbose logging.
-    --output              -o      TEXT  Output file for the scan results.
-    --no-decompile                      Skip the decompilation step.
-    --rules               -r      TEXT  Comma-separated list of rules to run.
-    --profile             -p      TEXT  Configuration profile to use.
-    --list-rules                        List all available rules and exit.
-    --install-completion                Install completion for the current shell.
-    --show-completion                   Show completion for the current shell, to copy it or customize the installation.
-
-    Commands
-    scan         Scan an APK file for vulnerabilities.
-    list-rules   List all available rules.
-    config       Manage the configuration of Droid-LLM-Hunter.
-    ```
-
 *   **Show Manage Configuration:**
     ```bash
     python dlh.py config --help
-    ```
-
-    ```bash
-    Manage the configuration of Droid-LLM-Hunter.
-
-    Commands
-    provider            Set the LLM provider.
-    model               Set the LLM model.
-    rules               Enable or disable rules.
-    show                Show the current configuration.
-    validate            Validate the configuration file.
-    attack-surface      Enable or disable the generation of the attack surface map.
-    context-injection   Enable or disable Cross-Reference Context Injection (Call Graph).
-    filter-mode         Set or show the code analysis filter mode.
-    decompiler-mode     Set or show the decompiler mode (apktool, jadx, hybrid).
-    wizard              Run the interactive configuration wizard.
-    profile             Manage configuration profiles.
     ```
 
 ### Flags
