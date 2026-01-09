@@ -11,7 +11,9 @@ llm:
   groq_api_key: "GROQ_API_KEY" # Replace with your Groq API key
   openai_model: "gpt-4-turbo" # default model for openai or "gpt-5.2"
   openai_api_key: "OPENAI_API_KEY" # Replace with your OpenAI API key
-
+  manus_model: "default" # model name for Manus (if applicable)
+  manus_api_key: "MANUS_API_KEY_HERE" # Replace with your Manus API key
+  manus_base_url: "https://api.manus.ai/v1" # Optional: Manus API base URL
 # Apktool Configuration
 apktool:
   path: "apktool" # Optional: if not in system PATH
