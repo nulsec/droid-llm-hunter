@@ -4,3 +4,4 @@ pyyaml
 pydantic
 langchain
 requests
+anthropic

@@ -115,9 +115,7 @@ def set_model(model: str = typer.Argument(None, help="The LLM model to use.")):
                 current_model = settings["llm"].get("groq_model")
             elif provider == "openai":
                 current_model = settings["llm"].get("openai_model")
-            elif provider == "manus":
-                current_model = settings["llm"].get("manus_model")
-
+            
             print(f"Current LLM model for {provider}: {current_model}")
         return
 
@@ -133,8 +131,8 @@ def set_model(model: str = typer.Argument(None, help="The LLM model to use.")):
         settings["llm"]["groq_model"] = model
     elif provider == "openai":
         settings["llm"]["openai_model"] = model
-    elif provider == "manus":
-        settings["llm"]["manus_model"] = model
+    elif provider == "claude":
+        settings["llm"]["claude_model"] = model
 
     with open("config/settings.yaml", "w") as f:
         yaml.dump(settings, f)
@@ -378,16 +376,6 @@ def config_wizard():
                 "provider": provider,
                 "openai_model": openai_model,
                 "openai_api_key": openai_api_key
-            }
-        }
-    elif provider == "manus":
-        manus_model = typer.prompt("Enter Manus model name")
-        manus_api_key = typer.prompt("Enter Manus API key")
-        settings = {
-            "llm": {
-                "provider": provider,
-                "manus_model": manus_model,
-                "manus_api_key": manus_api_key,
             }
         }
     else:

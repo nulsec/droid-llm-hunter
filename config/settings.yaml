@@ -2,25 +2,25 @@
 
 # LLM Configuration
 llm:
-  provider: "ollama"  # or "gemini" or "groq" or "openai"
-  model: "llama3:8b" # default model for ollama or "deepseek-coder-v2:16b"
+  provider: "claude"  # or "gemini" or "groq" or "openai" or "claude"
+  model: "deepseek-coder-v2" # default model for ollama or "deepseek-coder-v2:16b"
   api_key: "GEMINI_API_KEY" # Replace with your Gemini API key
   ollama_url: "http://localhost:11434"
-  gemini_model: "gemini-2.5-flash" # default model for gemini or "gemini-2.5-pro"
+  gemini_model: "gemini-2.0-flash" # default model for gemini or "gemini-2.5-pro"
   groq_model: "llama-3.1-8b-instant" # default model for groq or "qwen/qwen3-32b"
   groq_api_key: "GROQ_API_KEY" # Replace with your Groq API key
   openai_model: "gpt-4-turbo" # default model for openai or "gpt-5.2"
   openai_api_key: "OPENAI_API_KEY" # Replace with your OpenAI API key
-  manus_model: "default" # model name for Manus (if applicable)
-  manus_api_key: "MANUS_API_KEY_HERE" # Replace with your Manus API key
-  manus_base_url: "https://api.manus.ai/v1" # Optional: Manus API base URL
+  claude_model: "claude-3-5-sonnet-20241022" # default model for claude
+  claude_api_key: "ClAUDE_API_KEY" # Replace with your Claude/Anthropic API key
+
 # Apktool Configuration
 apktool:
-  path: "apktool" # Optional: if not in system PATH
+  path: "/Windows/apktool.bat" # Optional: if not in system PATH
 
 # JADX Configuration
 jadx:
-  path: "/opt/jadx/bin/jadx" # Absolute path since it might not be in PATH
+  path: "../jadx/build/jadx/bin/jadx.bat" # Absolute path since it might not be in PATH
 
 # Advanced Analysis Settings
 analysis:
@@ -32,19 +32,19 @@ analysis:
 # Analysis Rules
 # Enable or disable specific vulnerability checks
 rules:
-  sql_injection: false
-  webview_xss: false
-  hardcoded_secrets: false
+  sql_injection: true
+  webview_xss: true
+  hardcoded_secrets: true
   webview_deeplink: true
-  insecure_file_permissions: false
-  intent_spoofing: false
-  insecure_random_number_generation: false
-  jetpack_compose_security: false
-  biometric_bypass: false
-  graphql_injection: false
-  exported_components: false
-  deeplink_hijack: false
-  insecure_storage: false
-  path_traversal: false
-  insecure_webview: false
-  universal_logic_flaw: false 
+  insecure_file_permissions: true
+  intent_spoofing: true
+  insecure_random_number_generation: true
+  jetpack_compose_security: true
+  biometric_bypass: true
+  graphql_injection: true
+  exported_components: true
+  deeplink_hijack: true
+  insecure_storage: true
+  path_traversal: true
+  insecure_webview: true
+  universal_logic_flaw: true 
