@@ -11,6 +11,8 @@ llm:
   groq_api_key: "GROQ_API_KEY" # Replace with your Groq API key
   openai_model: "gpt-4-turbo" # default model for openai or "gpt-5.2"
   openai_api_key: "OPENAI_API_KEY" # Replace with your OpenAI API key
+  claude_model: "claude-3-5-sonnet-20241022" # default model for claude
+  claude_api_key: "CLOUDE_API_KEY" # Replace with your Claude/Anthropic API key
 
 # Apktool Configuration
 apktool:

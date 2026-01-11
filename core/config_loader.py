@@ -12,6 +12,8 @@ class LLMSettings(BaseModel):
     groq_api_key: Optional[str] = None
     openai_model: Optional[str] = None
     openai_api_key: Optional[str] = None
+    claude_model: Optional[str] = None
+    claude_api_key: Optional[str] = None
 
 class ApktoolSettings(BaseModel):
     path: Optional[str] = None

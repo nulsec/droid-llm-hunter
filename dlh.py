@@ -115,7 +115,9 @@ def set_model(model: str = typer.Argument(None, help="The LLM model to use.")):
                 current_model = settings["llm"].get("groq_model")
             elif provider == "openai":
                 current_model = settings["llm"].get("openai_model")
-            
+            elif provider == "claude":
+                current_model = settings["llm"].get("claude_model")
+
             print(f"Current LLM model for {provider}: {current_model}")
         return
 
